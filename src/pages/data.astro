@@ -19,15 +19,28 @@ const blogPosts = new Array(20).fill(0).map((v, i) => {
 });
 
 const blogPostString = JSON.stringify(blogPosts);
+
+const gallery = new Array(30).fill(0).map((g, i) => {
+    return {
+        id: faker.string.nanoid(),
+        filename: `IMG_${faker.number.int({ min: 1000, max: 9999 })}.JPG`,
+        size: `${faker.number.float({ min: 1, max: 9, precision: 0.1})} MB`,
+        url: faker.image.urlLoremFlickr({ category: 'cats', height: 640, width: 640 }),
+    };
+});
+
+const galleryString = JSON.stringify(gallery);
 ---
 
 <Layout title="Sample Data Generator">
     <main class="h-full -mt-16 lg:py-28">
         <div class="grid grid-cols-1 gap-2 max-w-4xl mx-auto text-white">
             <div>Blog Posts - <CopyCode code={blogPostString} /></div>
-            <div class="border border-blue-500">
+            <div class="border border-blue-500 max-h-12 overflow-hidden">
                 {blogPostString}
             </div>
+            <div>Galler Items - <CopyCode code={galleryString} /></div>
+            <div class="border border-blue-500 max-h-12 overflow-hidden">{galleryString}</div>
         </div>
     </main>
 </Layout>

@@ -1,0 +1,32 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from '../../layouts/Layout.astro';
+import gallery from '../../data/gallery.json';
+
+export const getStaticPaths = (() => {
+    return gallery.map(image => ({
+        params: {
+            id: image.id
+        }
+    }));
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+
+const image = gallery.find(i => id === i.id);
+---
+
+<Layout title={image?.filename ?? 'No Image Found'}>
+    <main class="text-white max-w-xl mx-auto py-16">
+        <div class="w-full">
+            <div class="aspect-h-1 aspect-w-1 block w-full overflow-hidden rounded-lg bg-gray-100">
+                <img src={image?.url ?? ''} alt="" class="object-cover pointer-events-none" transition:name={`img:${image?.id}`} />
+            </div>
+            <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-200">{image?.filename}</p>
+            <p class="pointer-events-none block text-sm font-medium text-gray-500">{image?.size}</p>
+        </div>
+        <div class="flex items-start justify-end py-4">
+            <a href="/gallery" class="hover:underline underline-offset-8 text-blue-500">Back</a>
+        </div>
+    </main>
+</Layout>

@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 
 <Layout title="Blog Section">
     <main class="text-white max-w-5xl mx-auto">
-        <h1 class="text-4xl p-8 sm:ml-2 lg:ml-8" transition:name="blog-header">Blog</h1>
+        <h1 class="text-4xl p-8 sm:ml-2 lg:ml-8">Blog</h1>
         <div class="grid grid-cols-1 gap-4 max-w-xl mx-auto pb-4">
             {blogs.map((blog, blogIndex) => {
                 var date = new Date(blog.date);
