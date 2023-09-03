@@ -1,0 +1,46 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from '../../layouts/Layout.astro';
+import blogs from '../../data/blogs.json';
+import { format } from 'date-fns';
+
+export const getStaticPaths = (() => {
+    return blogs.map(blog => ({
+        params: {
+            id: blog.id
+        }
+    }));
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+
+const blog = blogs.find(b => id === b.id);
+var date = new Date(blog?.date ?? new Date());
+var strDate = format(date, 'PPPP');
+var strDateTime = format(date, 'yyyy-MM-dd');
+---
+
+<Layout title={blog?.title ?? "No Blog Found"}>
+    <main class="text-white max-w-xl mx-auto py-16">
+        <div class="flex items-start justify-between">
+            <div>
+                <h2 class="text-3xl font-semibold leading-6" transition:name={`${blog?.id}:title`}>{blog?.title}</h2>
+                <h3 class="text-sm leading-6 text-gray-600" transition:name={`${blog?.id}:subtitle`}>{blog?.subtitle}</h3>
+            </div>
+            <div>
+                <time datetime={strDateTime} class="text-gray-500" transition:name={`${blog?.id}:date`}>{strDate}</time>
+            </div>
+        </div>
+        <div set:html={blog?.text} class="py-8"></div>
+        <div class="mt-8 flex items-center gap-x-4">
+            <img src={blog?.author.avatar} alt="" class="h-10 w-10 rounded-full bg-gray-50" />
+            <div class="text-sm leading-6">
+                <p class="font-semibold text-gray-300">{blog?.author.name}</p>
+                <p class="text-gray-600">{blog?.author.jobTitle}</p>
+            </div>
+        </div>
+        <div class="flex items-start justify-end py-4">
+            <a href="/blog" class="hover:underline underline-offset-8 text-blue-500">Back</a>
+        </div>
+    </main>
+</Layout>

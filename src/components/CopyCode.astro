@@ -1,0 +1,23 @@
+---
+const { code = '' } = Astro.props;
+---
+<copy-code data-code={code}>
+    <button type="button" class="rounded-md bg-indigo-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Copy Code</button>
+</copy-code>
+
+<script>
+    class CopyCode extends HTMLElement {
+        constructor() {
+            super();
+
+            const code = this.dataset.code ?? '';
+            const button = this.querySelector('button');
+            button?.addEventListener('click', async () => {
+                await navigator.clipboard.writeText(code);
+                alert('Code copied');
+            });
+        }
+    }
+
+    customElements.define('copy-code', CopyCode);
+</script>

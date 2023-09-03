@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CopyCode from '../components/CopyCode.astro';
+import { faker } from '@faker-js/faker';
+
+const blogPosts = new Array(20).fill(0).map((v, i) => {
+    return {
+        id: faker.string.nanoid(),
+        date: faker.date.anytime(),
+        title: faker.company.name(),
+        subtitle: faker.company.catchPhrase(),
+        text: faker.lorem.paragraphs({ min: 3, max: 10}, '<br/><br/>'),
+        author: {
+            avatar: faker.image.avatar(),
+            name: faker.person.fullName(),
+            jobTitle: faker.person.jobTitle(),
+        }
+    };
+});
+
+const blogPostString = JSON.stringify(blogPosts);
+---
+
+<Layout title="Sample Data Generator">
+    <main class="h-full -mt-16 lg:py-28">
+        <div class="grid grid-cols-1 gap-2 max-w-4xl mx-auto text-white">
+            <div>Blog Posts - <CopyCode code={blogPostString} /></div>
+            <div class="border border-blue-500">
+                {blogPostString}
+            </div>
+        </div>
+    </main>
+</Layout>
